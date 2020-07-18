@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CSGO-Community-Server</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+        <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css"> 
+        <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script> 
+        <script>
+            $(function() {
+                let config_url = "/config.json";
+                let server_list = new Array();
+                refuseServerList(config_url, server_list);
+            });
+
+            function appendServer(list, server) {
+                list.append(server);
+            }
+
+            function removeServer(list, server) {
+                list.remove();
+            }
+
+            function clearServerList() {
+                $("#server_list").empty();
+                $("#content").empty();
+            }
+
+            function createServer(serverInfo) {
+                function createCol(text, id) {
+                    return $("<td></td>").text(text).attr("id", id);
+                }
+
+                function createRow() {
+                    return $("<tr></tr>");
+                }
+
+                function createButton() {
+                    return $("<a>Connect</a>");
+                }
+
+                function generatorColId(serverGroup, serverId, col) {
+                    return serverGroup + "_" + serverId + "_" + col;
+                }
+                var a = createButton();
+                a.click(function() {
+                    setCSGOLink(a, generatorParam($("#launch-params code").text(), serverInfo.ip + ":" + serverInfo.port));
+                });
+                
+                var serverGroupId = parseInt(Math.random() * (1000 - 0 + 1) +0);
+                var row = createRow()
+                    // .append(createCol(serverInfo.id, generatorColId(serverGroupId, serverInfo.id, "id")))
+                    .append(createCol(serverInfo.name, generatorColId(serverGroupId, serverInfo.id, "name")))
+                    .append(createCol(serverInfo.user + "/" + serverInfo.max_user, generatorColId(serverGroupId, serverInfo.id, "user")))
+                    .append(createCol(serverInfo.map_name, generatorColId(serverGroupId, serverInfo.id, "map")))
+                    .append(createCol("N/A", generatorColId(serverGroupId, serverInfo.id, "ping")))
+                    .append(createCol(serverInfo.remarks, generatorColId(serverGroupId, serverInfo.id, "remarks")))
+                    .append(createCol("", generatorColId(serverGroupId, serverInfo.id, "operation")).append(a))
+                    ;
+                return row;
+
+            }
+
+            function createServerList(id, name, remarks, version) {
+                $("#server_list").append($("<li></li>").append($("<a></a>").text(name)
+                    .attr("href", "#"+id)
+                    .attr("data-toggle", "tab")
+                ));
+                $("#content").append($("<div></div>").append($("<table></table>")
+                    .attr("class", "table table-striped table-hover table-condensed")
+                    .append($("<thead></thead>")
+                        .append($("<tr></tr>")
+                        // .append($("<th></th>").text("id"))
+                        .append($("<th></th>").text("name"))
+                        .append($("<th></th>").text("player"))
+                        .append($("<th></th>").text("map"))
+                        .append($("<th></th>").text("ping"))
+                        .append($("<th></th>").text("remarks")))
+                    ).append($("<tbody></tbody>")))
+                
+                    .attr("id", id).attr("class", "tab-pane"));
+            }
+
+            function loadServerinfo(url, id) {
+                //clearServerList(id);
+                $.getJSON(url, function(data) {
+                    $.each(data, function(i, e) {
+                        appendServer($("#"+id+ " tbody"), createServer(e));
+                    })
+                });
+            }
+
+            
+            function refuseServerList(configUrl) {
+                $.getJSON(configUrl, function(data) {
+                    $.each(data.server_list, function(i, e) {
+                        createServerList(e.id, e.name, e.remarks, e.version);
+                        loadServerinfo(e.script_url, e.id);
+                    })
+                });
+            }
+
+            function setCSGOLink(e, param) {
+                e.attr("href", "steam://rungameid/730// " + param);
+            }
+
+            function generatorParam(paramStr, server) {
+                return paramStr + " +connect " + server;
+            }
+ 
+        </script>
+    </head>
+    <body>
+        <div id="container">
+            <ul id="server_list" class="nav nav-tabs">
+                <li>
+                    <a href="#index" data-toggle="tab">Index</a>
+                </li>
+            </ul>
+            <div id="content" class="tab-content">
+                <div id="index" class="tab-pane fade in active">
+                    <h1>WelCome!</h1>
+                    <div id="config" class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#config" href="#launch-params">
+                                    Launch Parameters
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="launch-params" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <code id="params"> -worldwide</code>
+                                <br />
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label id="params-worldwide" class="btn btn-default">
+                                        <input type="checkbox">-worldwide</input>
+                                    </label>
+                                    <label id="params-nvoid" class="btn btn-default">
+                                        <input type="checkbox">-novid</input>
+                                    </label>
+                                    <label id="params-highpriority" class="btn btn-default">
+                                        <input type="checkbox">-highpriority</input>
+                                    </label>
+                                    <label id="params-processheap" class="btn btn-default">
+                                        <input type="checkbox">-processheap</input>
+                                    </label>
+                                    <label id="params-scaleform" class="btn btn-default">
+                                        <input type="checkbox">-scaleform</input>
+                                    </label>
+                                    <script>
+                                        $(function() {
+                                            var code = $("#launch-params code").text();
+
+                                            var cookieParams = $.cookie("params");
+                                            if (cookieParams == undefined) {
+                                                $.cookie("params", code, {expires: 365});
+                                            } else {
+                                                code = cookieParams;
+                                                $("#launch-params code").text(code);
+                                            }
+                                            
+                                            $("#launch-params label").each(function(i, e){
+                                                var t = $.trim(e.innerText);
+                                                if (code.search(t) != -1) {
+                                                    $(e).attr("class", $(e).attr("class") + " active");
+                                                }
+                                            });
+                                            $("#launch-params .btn").click(function() {
+                                                var param = this.innerText;
+                                                if (code.search(param) == -1) {
+                                                    code += " " + param;
+                                                } else {
+                                                    code = code.replace(" " + param, "");
+                                                }
+                                                $("#launch-params code").text(code);
+                                                $.cookie("params", code, {expires: 365});
+                                            });
+                                        });
+                                        
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

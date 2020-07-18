@@ -1,0 +1,22 @@
+{
+    "id": 1,
+    "name": "config",
+    "server_list":
+    [
+        {
+            "id": "zed",
+            "name": "僵尸乐园",
+            "script_url": "/zed_server.json", 
+            "remarks": "",
+            "version": "0.0.1"
+        },{
+            "id": "x",
+            "name": "X社区",
+            "script_url": "/x_server.json",
+            "remarks": "",
+            "version": "0.0.1"
+        }
+    ]
+
+}
+
