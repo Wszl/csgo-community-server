@@ -6,13 +6,20 @@
         {
             "id": "zed",
             "name": "僵尸乐园",
-            "script_url": "/zed_server.json", 
+            "script_url": "/zed_server.js", 
             "remarks": "",
             "version": "0.0.1"
         },{
             "id": "x",
             "name": "X社区",
-            "script_url": "/x_server.json",
+            "script_url": "/x_server.js",
+            "remarks": "",
+            "version": "0.0.1"
+        },
+        {
+            "id": "fys",
+            "name": "风云社",
+            "script_url": "/fys_server.js",
             "remarks": "",
             "version": "0.0.1"
         }
