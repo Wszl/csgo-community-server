@@ -12,10 +12,14 @@
         <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css"> 
         <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script> 
         <script>
-
+            var site_path = window.location.pathname;
+            if (!site_path.endsWith("/")) {
+                site_path = site_path.replace(site_path.substring(site_path.lastIndexOf("/")), "/");
+            }
             $(function() {
                 let config_url = "/config.json";
                 let server_list = new Array();
+                
                 refuseServerList(config_url, server_list);
             });
 
@@ -90,7 +94,7 @@
             }
 
             function loadServerinfo(url, id) {
-                $.getScript(url, function() {
+                $.getScript(site_path + url, function() {
                     console.log("load success");
                 });
             }
@@ -98,7 +102,7 @@
             
             function refuseServerList(configUrl) {
                 clearServerList();
-                $.getJSON(configUrl, function(data) {
+                $.getJSON(site_path + configUrl, function(data) {
                     $.each(data.server_list, function(i, e) {
                         createServerList(e.id, e.name, e.remarks, e.version);
                         loadServerinfo(e.script_url, e.id);
