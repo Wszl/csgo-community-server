@@ -1,6 +1,16 @@
 var id_fys = "fys";
 var url = "https://fyscs.com/KxnrlApp/";
-var param = {"action": "dashboard", "token": "6t0nb5a33deub33r6261oerts4"};
+var token_fys = $.cookie("token_fys")
+if (token_fys == null || token_fys == undefined) {
+    $.get("https://fyscs.com/", function (data, status, xhr) {
+        var cookie = xhr.getResponseHeader("set-cookie");
+        let cookie_arr = cookie.split(";");
+        token_fys = $.trim(cookie_arr[0].split(":")[1]);
+        let age = $.trim(cookie_arr[2].split(":")[1]);
+        $.cookie("token_fys", token_fys, {"age": age, "path": "/"})
+    });
+}
+var param = {"action": "dashboard", "token": token_fys};
 $.post(url, param, function(data) {
     var dom_fys = $.parseHTML(data);
     let servers = $(dom_fys).find("#serverTable tr");
