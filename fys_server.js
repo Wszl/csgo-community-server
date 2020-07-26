@@ -2,12 +2,9 @@ var id_fys = "fys";
 var url = "https://fyscs.com/KxnrlApp/";
 var token_fys = $.cookie("token_fys")
 if (token_fys == null || token_fys == undefined) {
-    $.get("https://fyscs.com/", function (data, status, xhr) {
-        var cookie = xhr.getResponseHeader("set-cookie");
-        let cookie_arr = cookie.split(";");
-        token_fys = $.trim(cookie_arr[0].split(":")[1]);
-        let age = $.trim(cookie_arr[2].split(":")[1]);
-        $.cookie("token_fys", token_fys, {"age": age, "path": "/"})
+    $.get("https://fyscs.com/", function (data) {
+        token_fys = /(?<=token = ').*(?=';)/.exec(data)[0];
+        $.cookie("token_fys", token_fys, {"age": 604800, "path": "/"})
     });
 }
 var param = {"action": "dashboard", "token": token_fys};
