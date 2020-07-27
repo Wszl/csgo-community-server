@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CSGO-安装目录过大问题的解决方案</title>
+        <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style>
+            p {text-indent: 2em}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+        <article>
+            <h1>CSGO目录过大问题的解决方案<small>--Wszl</small></h1>
+            <p>来到这里的诸位，必定是玩csgo社区的，社区玩家的痛点之一，就是资源过多导致的csgo文件夹过大，
+                比如本人的csgo安装目录已经到了120g， 本人只玩僵尸逃跑，很少玩其他模式，即使如此，不算人物
+                模型，音频以及其他资源，光地图文件大小就已经超过了110g， 而csgo本体只有20g，而ssd仅有120g的
+                我，自然是无法快乐的游玩。
+            </p>
+            <p>
+                最初为了解决这个问题， 我定时删除一些地图，有些地图一张就几百兆，但是再玩到这张图时，又需要重新
+                下载，又要浪费时间，而且空间也没有节省下来。在后来我将maps目录映射到了其他的硬盘，这样，就能愉快
+                的玩耍了，再也不用担心磁盘空间满了的烦恼了。
+            </p>
+            <p>
+                先说一下本人的硬盘配置：
+                <pre>
+120g SSD:
+    |- Steam
+        |- CSGO 本体
+1T HDD:
+    |- map 
+                </pre>
+                稍微省略了一些目录，大概就是这么个意思，将map目录映射到了其他的硬盘，具体做法如下。
+            </p>
+            <p>
+                首先找到你的csgo安装目录，比如我的在 C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\, 
+                在这个目录下，找到你的maps目录 我的是 C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\csgo\maps,
+                你可以在这个目录下看到你所有的地图，如果你玩社区服的时间够长，那么这个文件夹一定很大。
+            </p>
+            <p>
+                找到了maps目录后，选择一个空间够大的磁盘，比如我的是D盘，将maps这个文件夹直接剪切到D盘中，等待移动完成后，让我们来用符号路径映射这个目录。
+            </p>
+            <p>
+                打开命令提示符，WIN+R打开，你也可以适用windows的搜索命令搜索 cmd （如果你和我一样csgo本体在c盘，那么你需要通过管理员启动cmd， 具体做法
+                是不用左键双击打开而是右键以管理员身份运行），然后打开将会显示一个交互式的终端，长相就是一个黑乎乎的窗口。在窗口中
+                输入如下命令
+            </p>
+                        <code>
+                            mklink /D "D:\maps" "C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\csgo\maps" （建议复制后
+                            自己修改一下盘符路径然后粘贴到cmd中）
+                        </code>
+                        
+            <p>
+                输入完毕后直接回车，然后你再次访问 C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\csgo\ 这个目录，
+                你会发现你的maps目录变成了一个快捷方式图标的文件夹，打开文件夹后，直接显示的是D盘中maps的内容，此时就大功告成了。
+            </p>
+            <p>
+                再次进入游戏，新的地图会自动下载到D盘中的maps目录，而读取地图时也会从此文件夹中读取，成功解决了问题。
+            </p>
+            <p>
+                至于我为什么要将csgo本体放在120g的SSD中，而不是直接将游戏放在HDD中，原因是SSD的速度更快，在加载游戏资源的时候更加迅速，游戏中一些特效，
+                音频以及实时读取的文件，也不会出现卡顿。而地图文件夹过大，地图本身也只在游戏开始时初始化一次，不会再次读取，对硬盘的是4k要求并不那么高，
+                这也是为什么只移动maps目录而不移动其他目录的原因。
+                当然，土豪的直接上512或者1t的SSD是更加直接干脆有效的方法，可惜我等屌丝还用着几年前的机器，硬件方面图个够用就好，每天发愁如何为新来的小姐姐
+                安家的人，只能用这种费时费力的方法了。
+            </p>
+        </article>
+        <div>
+                <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" property="dct:title" rel="dct:type">CSGO-安装目录过大问题的解决方案</span> 由 <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Wszl</span> 采用 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a>进行许可。
+            </div>
+        </div>
+       
+    </body>
+</html>
