@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css"> 
         <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script> 
         <script>
-            var site_path = window.location.pathname;
+            var site_path = window.location.href;
             if (!site_path.endsWith("/")) {
                 site_path = site_path.replace(site_path.substring(site_path.lastIndexOf("/")), "/");
             }
@@ -112,11 +112,11 @@
             }
 
             function setCSGOLink(e, param) {
-                e.attr("href", "steam://rungameid/730// " + param);
+                e.attr("href", param);
             }
 
             function generatorParam(paramStr, server) {
-                return paramStr + " +connect " + server;
+                return "steam://connect/" + server + paramStr;
             }
  
         </script>
