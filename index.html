@@ -21,10 +21,11 @@
                 let config_url = "/config.json";
                 let server_list = new Array();
                 
-                refuseServerList(config_url, server_list);
+                refreshAllServerList(config_url, server_list);
             });
 
             var globalServers = new Map();
+            var config;
 
             function appendServer(list, server) {
                 list.append(server);
@@ -34,9 +35,13 @@
                 list.remove();
             }
 
-            function clearServerList() {
+            function clearAllServerList() {
                 $("#server_list .server_list_tag").remove();
                 $("#content .server_list_content").empty();
+            }
+
+            function clearServerList(sid) {
+                $("#" + sid + " tbody").empty();
             }
 
             function createServer(serverInfo) {
@@ -75,7 +80,7 @@
             }
 
             function createServerList(id, name, remarks, version) {
-                $("#server_list").append($("<li class=\"server_list_tag\"></li>").append($("<a></a>").text(name)
+                $("#server_list").append($("<li class=\"server_list_tag\" sid=" + id + "></li>").append($("<a></a>").text(name)
                     .attr("href", "#"+id)
                     .attr("data-toggle", "tab")
                 ));
@@ -88,27 +93,48 @@
                         .append($("<th></th>").text("player"))
                         .append($("<th></th>").text("map"))
                         .append($("<th></th>").text("ping"))
-                        .append($("<th></th>").text("remarks")))
+                        .append($("<th></th>").text("remarks"))
+                        .append($("<button id=\"refreshBtn\" type=\"button\" class=\"btn btn-primary\" onClick=\"refreshServerList($('.server_list_tag.active').attr('sid'))\">Refresh</button>"))
+                        )
                     ).append($("<tbody></tbody>")))
                 
                     .attr("id", id).attr("class", "tab-pane"));
             }
 
             function loadServerinfo(url, id) {
+                console.log("loading " + id)
                 $.getScript(site_path + url, function() {
                     console.log("load success");
                 });
             }
 
             
-            function refuseServerList(configUrl) {
-                clearServerList();
+            function refreshAllServerList(configUrl) {
+                clearAllServerList();
                 $.getJSON(site_path + configUrl, function(data) {
+                    config = data;
                     $.each(data.server_list, function(i, e) {
                         createServerList(e.id, e.name, e.remarks, e.version);
                         loadServerinfo(e.script_url, e.id);
                     })
                 });
+            }
+
+            function refreshServerList(sid) {
+                clearServerList(sid);
+                let index = 0;
+                for (; index < config.server_list.length; index++) {
+                    if (sid === config.server_list[index].id) {
+                        break;
+                    }
+
+                }
+                if (index === config.server_list.length) {
+                    console.log("server id " + sid + " not found.");
+                    return;
+                }
+                let c = config.server_list[index];
+                loadServerinfo(c.script_url, sid);               
             }
 
             function setCSGOLink(e, param) {
